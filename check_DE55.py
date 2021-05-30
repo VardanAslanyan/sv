@@ -1,14 +1,5 @@
-from tlv_parser import DE_55
-# import iso8583
-# from iso8583.specs import default_ascii as spec
-# from iso8583.tools import pp
-# import pprint
+from tlv_parser import DE55
 
-#
-# s = b"02003230058020c08000000000000000002000050616313000001521050616311805920000335413330089020011=25126010793608052101087821000878051"
-#
-# doc_dec, doc_enc = iso8583.decode(s, spec)
-# pprint.pprint(doc_dec)
 
 field_55_android = """  
 
@@ -49,11 +40,11 @@ ing_field_55 = """4F 07 A0 00 00 00 04 30 60 5F 2A 02 00 51 82 02 30 00 84 07
 
 if __name__ == '__main__':
     # pass
-    test1 = DE_55(field_55_android)
+    test1 = DE55(field_55_android)
     test1.__repr__()
-    test2 = DE_55(ing_field_55)
+    test2 = DE55(ing_field_55)
     test2.__repr__()
-    test1.diff(test2)
+    # test1.diff(test2)
     # print(test1 == test2)
     # print(len(test1))
     # print(len(test2))

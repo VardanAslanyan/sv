@@ -1,7 +1,7 @@
 from pytlv.TLV import *
 
 
-class DE_55:
+class DE55:
     all_emv = {"5f2a": "Terminal Currency Code", "5f34": "PAN Sequence Number", "82": "Application Interchange Profile",
                "84": "Dedicated File", "8a": "Auth Response Code", "95": "TVR", "9a": "Transaction Date",
                "9b": "TSI", "9c": "Transaction Type", "9f02": "Amount Auth", "9f03": "Amount Other",
@@ -18,11 +18,11 @@ class DE_55:
 
     @classmethod
     def __get_tag(cls):
-        tlv = TLV(DE_55.key_list)
+        tlv = TLV(DE55.key_list)
         return tlv
 
     def __eq__(self, other):
-        if not isinstance(other, DE_55):
+        if not isinstance(other, DE55):
             raise Exception("The second one is not DE_55 obj")
         if dict(self.__get_tag().parse(self.emv_data)).keys() == dict(other.__get_tag().parse(other.emv_data)).keys():
             return True
@@ -35,7 +35,7 @@ class DE_55:
             length = len(k)
             if length == 2:
                 length = 6
-            print(DE_55.all_emv.get(k), ">"*(35 - len(DE_55.all_emv.get(k))), k, "-" * length, v)
+            print(DE55.all_emv.get(k), ">"*(35 - len(DE55.all_emv.get(k))), k, "-" * length, v)
         print('================================================================================')
 
     def __len__(self):
@@ -43,7 +43,7 @@ class DE_55:
 
     @classmethod
     def __dict__(cls):
-        return DE_55.all_emv
+        return DE55.all_emv
 
     def diff(self, other):
         if self.__eq__(other):
