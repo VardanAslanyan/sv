@@ -7,6 +7,7 @@ class SV:
     Data = namedtuple("Data", ["field", "length", "name"])
     mti = Data(0, 4*2, "Message Type ID")
     field_1 = Data(1, 8*2, "Secondary Bit-Map")
+    field_2 = Data(2, None, "Primary Account Number")
     field_3 = Data(3, 6*2, "Processing code")
     field_4 = Data(4, 12*2, "Amount Trx")
     field_7 = Data(7, 10*2, "Tate and Time")
@@ -16,6 +17,9 @@ class SV:
     field_24 = Data(24, 3*2, "Function Code")
     field_25 = Data(25, 2*2, "Point of Service Condition Code")
     field_35 = Data(35, None, "Track 2 Data")
+    field_37 = Data(37, 12*2, "Retrieval Reference Number")
+    field_38 = Data(38, 6*2, "Approval Code")
+    field_39 = Data(39, 3*2, "Response Code")
     field_41 = Data(41, 8*2, "Card Acceptor Terminal Identification")
     field_42 = Data(42, 15*2, "Merchant Identification")
     field_49 = Data(49, 3*2, "Currency Code, Transaction")
@@ -32,12 +36,11 @@ class SV:
     def get_mti(self):
         mti_hex = self.message[:SV.mti.length]
         mti = self.hex_ascii(mti_hex)
-        return mti, mti_hex
+        return mti
 
     def bitmap(self):
-        bitmap_len = SV.field_1.length
-        mti_len = len(self.get_mti()[1])
-        bitmap_hex = self.message[mti_len: mti_len + bitmap_len]
+        self.get_mti()
+        bitmap_hex = self.message[SV.mti.length: SV.mti.length + SV.field_1.length]
         return bitmap_hex
 
     def bitmap_to_bin(self):
@@ -60,7 +63,9 @@ class SV:
         for i in source:
             for j in SV.all_fields:
                 if i == j.field:
-                    if i == 35:
+                    if i == 2:
+                        pass
+                    elif i == 35:
                         field_35_length_hex = data[:4]
                         field_35_length = int(self.hex_ascii(field_35_length_hex))*2
                         data = data[4:]
@@ -73,7 +78,6 @@ class SV:
                         field_55_length = int(data[:4])*2
                         data = data[4:]
                         data_out[i] = DE55(str(data[:field_55_length]))
-
                     else:
                         data_out[i] = self.hex_ascii(data[:j.length])
                         data = data[j.length:]
@@ -86,21 +90,22 @@ class SV:
         return data
 
     def __repr__(self):
-        print("MTI>>", self.get_mti()[0], sep="")
+        print("MTI>>", self.get_mti(), sep="")
         print("BITMAP>>", self.find_fields(), sep="")
         for k, v in self.parse_data().items():
             for i in SV.all_fields:
                 if k == i.field:
                     if k == 55:
+                        print("\n-----Start EMV Data-----")
                         v.__repr__()
                     else:
                         if len(str(k)) == 1:
-                            space = 9
+                            space = 1
                         else:
-                            space = 8
-                        print(f'{i.name}{">"*(37 - len(i.name))}{k}{"-"*space}{v}')
+                            space = 0
+                        print(f'{i.name}{">"*(37 - len(i.name) + space)}{k}{"-"*8}{v}')
 
 
 if __name__ == '__main__':
-    w = SV("message")
+    w = SV("request.txt")
     w.__repr__()
