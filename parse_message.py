@@ -66,16 +66,13 @@ class SV:
         for i in source:
             for j in SV.all_fields:
                 if i == j.field:
-                    if i == 2 or i == 35:
-                        field_length_hex = data[:4]
+                    if i == 2 or i == 35 or i == 46:
+                        length = 4
+                        if i == 46:
+                            length = 6
+                        field_length_hex = data[:length]
                         field_length = int(self.hex_ascii(field_length_hex)) * 2
-                        data = data[4:]
-                        data_out[i] = self.hex_ascii(data[: field_length])
-                        data = data[field_length:]
-                    elif i == 46:
-                        field_length_hex = data[:6]
-                        field_length = int(self.hex_ascii(field_length_hex)) * 2
-                        data = data[6:]
+                        data = data[length:]
                         data_out[i] = self.hex_ascii(data[: field_length])
                         data = data[field_length:]
                     elif i == 52:
