@@ -25,8 +25,8 @@ class SV:
     field_49 = Data(49, 3*2, "Currency Code, Transaction")
     field_52 = Data(52, 8*2, "Personal Identification Data")
     field_55 = Data(55, None, "EMV Data")
-    all_fields = (field_3, field_4, field_7, field_11, field_12, field_22, field_24,
-                  field_25, field_35, field_41, field_42, field_49, field_52, field_55)
+    all_fields = (field_2, field_3, field_4, field_7, field_11, field_12, field_22, field_24,
+                  field_25, field_35, field_37, field_38, field_39, field_41, field_42, field_49, field_52, field_55)
 
     def __init__(self, data):
         with open(data, "r") as message:
@@ -64,7 +64,11 @@ class SV:
             for j in SV.all_fields:
                 if i == j.field:
                     if i == 2:
-                        pass
+                        field_2_length_hex = data[:4]
+                        field_2_length = int(self.hex_ascii(field_2_length_hex)) * 2
+                        data = data[4:]
+                        data_out[i] = self.hex_ascii(data[: field_2_length])
+                        data = data[field_2_length:]
                     elif i == 35:
                         field_35_length_hex = data[:4]
                         field_35_length = int(self.hex_ascii(field_35_length_hex))*2
@@ -107,5 +111,5 @@ class SV:
 
 
 if __name__ == '__main__':
-    w = SV("request.txt")
+    w = SV("response.txt")
     w.__repr__()
