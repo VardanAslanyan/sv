@@ -79,7 +79,7 @@ class SV:
                         data_out[i] = data[:j.length]
                         data = data[j.length:]
                     elif i == 55:
-                        field_55_length = int(data[:4])*2
+                        field_55_length = int(data[:4]) * 2
                         data = data[4:]
                         data_out[i] = DE55(str(data[:field_55_length]))
                     else:
