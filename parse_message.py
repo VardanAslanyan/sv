@@ -22,11 +22,14 @@ class SV:
     field_39 = Data(39, 3*2, "Response Code")
     field_41 = Data(41, 8*2, "Card Acceptor Terminal Identification")
     field_42 = Data(42, 15*2, "Merchant Identification")
+    field_46 = Data(46, None, "Amount, fees")
+    field_48 = Data(48, None, "Additional Data - Private")
     field_49 = Data(49, 3*2, "Currency Code, Transaction")
     field_52 = Data(52, 8*2, "Personal Identification Data")
     field_55 = Data(55, None, "EMV Data")
     all_fields = (field_2, field_3, field_4, field_7, field_11, field_12, field_22, field_24,
-                  field_25, field_35, field_37, field_38, field_39, field_41, field_42, field_49, field_52, field_55)
+                  field_25, field_35, field_37, field_38, field_39, field_41, field_42, field_46, field_48,
+                  field_49, field_52, field_55)
 
     def __init__(self, data):
         with open(data, "r") as message:
@@ -69,12 +72,12 @@ class SV:
                         data = data[4:]
                         data_out[i] = self.hex_ascii(data[: field_length])
                         data = data[field_length:]
-                    # elif i == 35:
-                    #     field_35_length_hex = data[:4]
-                    #     field_35_length = int(self.hex_ascii(field_35_length_hex)) * 2
-                    #     data = data[4:]
-                    #     data_out[i] = self.hex_ascii(data[: field_35_length])
-                    #     data = data[field_35_length:]
+                    elif i == 46:
+                        field_length_hex = data[:6]
+                        field_length = int(self.hex_ascii(field_length_hex)) * 2
+                        data = data[6:]
+                        data_out[i] = self.hex_ascii(data[: field_length])
+                        data = data[field_length:]
                     elif i == 52:
                         data_out[i] = data[:j.length]
                         data = data[j.length:]
