@@ -63,18 +63,18 @@ class SV:
         for i in source:
             for j in SV.all_fields:
                 if i == j.field:
-                    if i == 2:
-                        field_2_length_hex = data[:4]
-                        field_2_length = int(self.hex_ascii(field_2_length_hex)) * 2
+                    if i == 2 or i == 35:
+                        field_length_hex = data[:4]
+                        field_length = int(self.hex_ascii(field_length_hex)) * 2
                         data = data[4:]
-                        data_out[i] = self.hex_ascii(data[: field_2_length])
-                        data = data[field_2_length:]
-                    elif i == 35:
-                        field_35_length_hex = data[:4]
-                        field_35_length = int(self.hex_ascii(field_35_length_hex))*2
-                        data = data[4:]
-                        data_out[i] = self.hex_ascii(data[: field_35_length])
-                        data = data[field_35_length:]
+                        data_out[i] = self.hex_ascii(data[: field_length])
+                        data = data[field_length:]
+                    # elif i == 35:
+                    #     field_35_length_hex = data[:4]
+                    #     field_35_length = int(self.hex_ascii(field_35_length_hex)) * 2
+                    #     data = data[4:]
+                    #     data_out[i] = self.hex_ascii(data[: field_35_length])
+                    #     data = data[field_35_length:]
                     elif i == 52:
                         data_out[i] = data[:j.length]
                         data = data[j.length:]
@@ -110,6 +110,4 @@ class SV:
                         print(f'{i.name}{">"*(37 - len(i.name) + space)}{k}{"-"*8}{v}')
 
 
-if __name__ == '__main__':
-    w = SV("response.txt")
-    w.__repr__()
+
