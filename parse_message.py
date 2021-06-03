@@ -13,6 +13,7 @@ class SV:
     field_7 = Data(7, 10*2, "Tate and Time")
     field_11 = Data(11, 6*2, "Systems Trace Audit Number")
     field_12 = Data(12, 12*2, "Time, Local Transaction")
+    field_14 = Data(14, 6*2, "Date, Expiration")
     field_22 = Data(22, 3*2, "Point of Service Data Code")
     field_24 = Data(24, 3*2, "Function Code")
     field_25 = Data(25, 2*2, "Point of Service Condition Code")
@@ -26,15 +27,17 @@ class SV:
     field_48 = Data(48, None, "Additional Data - Private")
     field_49 = Data(49, 3*2, "Currency Code, Transaction")
     field_52 = Data(52, 8*2, "Personal Identification Data")
+    field_53 = Data(53, None, "COMMUNICATION KEY")
     field_55 = Data(55, None, "EMV Data")
+    field_64 = Data(64, 8*2, "PRIMARY MAC DATA")
     all_fields = (field_2, field_3, field_4, field_7, field_11, field_12, field_22, field_24,
                   field_25, field_35, field_37, field_38, field_39, field_41, field_42, field_46, field_48,
-                  field_49, field_52, field_55)
+                  field_49, field_52, field_53, field_55, field_64)
 
     def __init__(self, data):
         with open(data, "r") as message:
             req_data = message.read().replace(" ", "").replace("\n", "")
-            self.message = req_data
+            self.message = req_data[8:]
 
     def get_mti(self):
         mti_hex = self.message[:SV.mti.length]
@@ -66,16 +69,19 @@ class SV:
         for i in source:
             for j in SV.all_fields:
                 if i == j.field:
-                    if i == 2 or i == 35 or i == 46:
+                    if i == 2 or i == 35 or i == 46 or i == 53:
                         length = 4
                         if i == 46:
                             length = 6
                         field_length_hex = data[:length]
                         field_length = int(self.hex_ascii(field_length_hex)) * 2
                         data = data[length:]
-                        data_out[i] = self.hex_ascii(data[: field_length])
+                        if i == 53:
+                            data_out[i] = data[: field_length]
+                        else:
+                            data_out[i] = self.hex_ascii(data[: field_length])
                         data = data[field_length:]
-                    elif i == 52:
+                    elif i == 52 or i == 64:
                         data_out[i] = data[:j.length]
                         data = data[j.length:]
                     elif i == 55:
