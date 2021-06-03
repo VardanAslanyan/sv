@@ -1,23 +1,22 @@
 import socket
 
-hostname = socket.gethostname()
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-d = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+HOST = '192.168.7.210'
+PORT = 5050
 
-s.bind((socket.gethostbyname(hostname), 5050))
-s.listen(5)
-
-while True:
-    client_socket, address = s.accept()
-    print(address)
-    # t = s.recv(1024)
-    # client_socket.recv(1024)
-    client_socket.send(bytes("Welcome to server", "utf-8"))
-    # client_socket.close()
-    if address:
-        d.connect(("109.75.38.80", 6090))
-        msg = s.recv(1024)
-        d.sendall(msg)
-        print(msg.decode("utf-8"))
-
-# print(socket.gethostbyname(hostname))
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as d:
+        s.bind((HOST, PORT))
+        s.listen(5)
+        conn, address = s.accept()
+        d.connect(("91.199.226.7", 10010))
+        with conn:
+            print('Connected by', address)
+            while True:
+                data = conn.recv(1024)
+                if not data:
+                    break
+                print(data)
+                d.sendall(data)
+                to_client = d.recv(1024)
+                print(to_client)
+                conn.sendall(to_client)
