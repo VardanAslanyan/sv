@@ -113,7 +113,7 @@ class SV:
                             space = 1
                         else:
                             space = 0
-                        print(f'{i.name}{">"*(37 - len(i.name) + space)}{k}{"-"*8}{v}')
+                        print(f'{i.name}{">"*(40 - len(i.name) + space)}{k}{"-"*8}{v}')
 
 
 

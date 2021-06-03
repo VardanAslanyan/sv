@@ -36,7 +36,7 @@ class DE55:
             length = len(k)
             if length == 2:
                 length = 6
-            print(DE55.all_emv.get(k), ">"*(35 - len(DE55.all_emv.get(k))), k, "-" * length, v)
+            print(DE55.all_emv.get(k), ">"*(38 - len(DE55.all_emv.get(k))), k, "-" * length, v)
         print('================================================================================')
 
     def __len__(self):
