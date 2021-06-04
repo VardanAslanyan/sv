@@ -11,7 +11,6 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
             conn, address = s.accept()
             d.connect((destination, destination_port))
             with conn:
-                print('Connected by', address)
                 while True:
                     data = conn.recv(1024)
                     data_hex = binascii.hexlify(data)

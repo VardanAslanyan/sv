@@ -100,12 +100,13 @@ class SV:
         return data
 
     def __repr__(self):
+        print(f"\n{'-'*80}")
         data = self.parse_data()
         if data.get(24) == "811":
             print("----------Network Key Change----------")
         elif data.get(24) == "831":
             print("----------Echo Test----------")
-        elif data.get(24) == "0400":
+        elif data.get(24) == "400":
             print("----------Reversal----------")
         print("MTI>>", self.get_mti(), sep="")
         print("BITMAP>>", self.find_fields(), sep="")
