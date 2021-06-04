@@ -11,7 +11,7 @@ class DE55:
                "9f36": "Application Transaction Counter", "9f37": "Unpredictable Number",
                "9f41": "Transaction Seq Number", "4f": "Application Identifier",
                "9f6e": "Contactless Reader Capabilities", "9f53": "Transaction Category Code",
-               "91": "Issuer Authentication Data"}
+               "91": "Issuer Authentication Data", "9f63": "Offline Counter Initial Value"}
     key_list = list((all_emv.keys()))
 
     def __init__(self, emv_data: str):
