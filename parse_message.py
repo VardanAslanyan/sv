@@ -63,10 +63,10 @@ class SV:
 
     def find_fields(self):
         source = self.bitmap_to_bin()
-        fields = []
-        for i in enumerate(source, 1):
-            if i[1] == "1":
-                fields.append(i[0])
+        fields = [i[0] for i in enumerate(source, 1) if i[1] == "1"]
+        # for i in enumerate(source, 1):
+        #     if i[1] == "1":
+        #         fields.append(i[0])
         return fields
 
     def parse_data(self):
