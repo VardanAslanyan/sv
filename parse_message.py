@@ -106,15 +106,21 @@ class SV:
         data = bytes_object.decode("ASCII")
         return data
 
+    @classmethod
+    def field_24_parse(cls, data):
+        if data.get(24) == "811":
+            return "----------Network Key Change----------"
+        elif data.get(24) == "831":
+            return "----------Echo Test----------"
+        elif data.get(24) == "400":
+            return "----------Reversal----------"
+        else:
+            return "----------------------------"
+
     def __repr__(self):
         print(f"\n{'-'*80}")
         data = self.parse_data()
-        if data.get(24) == "811":
-            print("----------Network Key Change----------")
-        elif data.get(24) == "831":
-            print("----------Echo Test----------")
-        elif data.get(24) == "400":
-            print("----------Reversal----------")
+        print(self.field_24_parse(data))
         print("MTI>>", self.get_mti(), sep="")
         print("BITMAP>>", self.find_fields(), sep="")
         for k, v in data.items():
