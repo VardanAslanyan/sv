@@ -107,15 +107,20 @@ class SV:
         return data
 
     @classmethod
+    def print_24(cls, data):
+        symbols = '-'*((38 - len(data))//2)
+        return f"{symbols}{data}{symbols}"
+
+    @classmethod
     def field_24_parse(cls, data):
         if data.get(24) == "811":
-            return "----------Network Key Change----------"
+            return SV.print_24('Network Key Change')
         elif data.get(24) == "831":
-            return "----------Echo Test----------"
+            return SV.print_24('Echo Test')
         elif data.get(24) == "400":
-            return "----------Reversal----------"
+            return SV.print_24('Reversal')
         else:
-            return "----------------------------"
+            return "-"*38
 
     def __repr__(self):
         print(f"\n{'-'*80}")
