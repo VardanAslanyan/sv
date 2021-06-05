@@ -107,25 +107,28 @@ class SV:
         return data
 
     @classmethod
-    def print_24(cls, data):
-        symbols = '-'*((38 - len(data))//2)
-        return f"{symbols}{data}{symbols}"
+    def print_24(cls, message_name):
+        symbols = '-'*((38 - len(message_name))//2)
+        return f"{symbols}{message_name}{symbols}"
 
     @classmethod
-    def field_24_parse(cls, data):
-        if data.get(24) == "811":
-            return SV.print_24('Network Key Change')
-        elif data.get(24) == "831":
-            return SV.print_24('Echo Test')
-        elif data.get(24) == "400":
-            return SV.print_24('Reversal')
+    def field_24_parse(cls, value: str):
+        function_code = {'811': 'Network Key Change', '831': 'Echo Test', '400': 'Reversal'}
+        if value in function_code.keys():
+            SV.print_24(function_code.get(value))
+        # if value == "811":
+        #     return SV.print_24('Network Key Change')
+        # elif value == "831":
+        #     return SV.print_24('Echo Test')
+        # elif value == "400":
+        #     return SV.print_24('Reversal')
         else:
             return "-"*38
 
     def __repr__(self):
         print(f"\n{'-'*80}")
         data = self.parse_data()
-        print(self.field_24_parse(data))
+        print(self.field_24_parse(data.get(24)))
         print("MTI>>", self.get_mti(), sep="")
         print("BITMAP>>", self.find_fields(), sep="")
         for k, v in data.items():
