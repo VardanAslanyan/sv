@@ -34,7 +34,7 @@ class SV:
     field_52 = Data(52, 8*2, "Personal Identification Data")
     field_53 = Data(53, 'len_ascii', "COMMUNICATION KEY")
     field_54 = Data(54, None, "Amounts, Additional") #TODO check this if possible
-    field_55 = Data(55, 'len_hex', "EMV Data")
+    field_55 = Data(55, 'len_int', "EMV Data")
     field_62 = Data(62, None, "Customer Defined Response") #TODO check this if possible
     field_63 = Data(63, None, "Client Debts Data") #TODO check this if possible
     field_64 = Data(64, 8*2, "PRIMARY MAC DATA")
