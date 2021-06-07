@@ -16,16 +16,12 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
                     data_hex = binascii.hexlify(data)
                     if not data:
                         break
-                    # with open("request.txt", "wb") as request_data:
-                    #     request_data.write(data_hex)
-                    # w = SV("request.txt")
+                    # print(data_hex)
                     SV(data_hex.decode("utf-8")).__repr__()
                     d.sendall(data)
                     to_client = d.recv(1024)
                     to_client_hex = binascii.hexlify(to_client)
-                    # with open("response.txt", "wb") as response_data:
-                    #     response_data.write(to_client_hex)
-                    # f = SV("response.txt")
+                    # print(to_client_hex)
                     SV(to_client_hex.decode("utf-8")).__repr__()
                     conn.sendall(to_client)
 
