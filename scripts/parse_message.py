@@ -1,5 +1,5 @@
 from collections import namedtuple
-from tlv_parser import DE55
+from .tlv_parser import DE55
 
 
 class SV:

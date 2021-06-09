@@ -1,8 +1,10 @@
 import socket
 import binascii
-from parse_message import SV
+from .parse_message import SV
+from retry import retry
 
 
+@retry(exceptions=Exception, tries=5, delay=2, backoff=2, max_delay=10)
 def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, destination=None, destination_port=None):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as d:
@@ -11,11 +13,8 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
             conn, address = s.accept()
             d.connect((destination, destination_port))
             with conn:
-                # while True:
                 data = conn.recv(1024)
                 data_hex = binascii.hexlify(data)
-                # if not data:
-                #     break
                 try:
                     SV(data_hex.decode("utf-8")).__repr__()
                 except Exception as ex:

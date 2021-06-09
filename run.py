@@ -1,4 +1,4 @@
-from sniff_sv import sniffer_data
+from scripts import sniffer_data
 
 if __name__ == '__main__':
     dest_address = "91.199.226.7"
