@@ -36,7 +36,6 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
             finally:
                 conn.sendall(to_client)
                 print("The end!")
-    conn.close()
     d.close()
     s.close()
     print('It is the end!')
