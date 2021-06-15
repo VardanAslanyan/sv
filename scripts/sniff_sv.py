@@ -16,7 +16,7 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
         while True:
             data = conn.recv(1024)
             if not data:
-                print("Good day!")
+                print("Good day my brother!")
                 break
             d = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             d.connect((destination, destination_port))
