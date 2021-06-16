@@ -18,14 +18,14 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
             if not data:
                 print("Good day my brother!")
                 break
-            d = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            d.connect((destination, destination_port))
             data_hex = binascii.hexlify(data)
             try:
                 SV(data_hex.decode("utf-8")).__repr__()
             except Exception as ex:
                 print(ex)
             finally:
+                d = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                d.connect((destination, destination_port))
                 d.sendall(data)
                 to_client = d.recv(1024)
                 to_client_hex = binascii.hexlify(to_client)
