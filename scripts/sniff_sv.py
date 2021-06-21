@@ -18,8 +18,8 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
             if not data:
                 print("Good day my brother!")
                 break
-            data_hex = binascii.hexlify(data)
             try:
+                data_hex = binascii.hexlify(data)
                 SV(data_hex.decode("utf-8")).__repr__()
             except Exception as ex:
                 print(ex)
@@ -28,8 +28,8 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
                 d.connect((destination, destination_port))
                 d.sendall(data)
                 to_client = d.recv(1024)
-                to_client_hex = binascii.hexlify(to_client)
             try:
+                to_client_hex = binascii.hexlify(to_client)
                 SV(to_client_hex.decode("utf-8")).__repr__()
             except Exception as ex:
                 print(ex)
