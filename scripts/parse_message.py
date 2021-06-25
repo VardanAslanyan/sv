@@ -11,7 +11,7 @@ class SV:
     field_3 = Data(3, 6*2, "Processing code")
     field_4 = Data(4, 12*2, "Amount Trx")
     field_5 = Data(5, 13*2, "Amount, Settlement")
-    field_7 = Data(7, 10*2, "Tate and Time")
+    field_7 = Data(7, 10*2, "Date and Time")
     field_11 = Data(11, 6*2, "Systems Trace Audit Number")
     field_12 = Data(12, 12*2, "Time, Local Transaction")
     field_14 = Data(14, 6*2, "Date, Expiration")
