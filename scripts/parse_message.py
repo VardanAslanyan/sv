@@ -131,7 +131,7 @@ class SV:
             for i in SV.all_fields:
                 if k == i.field:
                     if k == 55:
-                        print(f"\n{'-'*23}Start EMV Data{'-'*23}")
+                        print(f"\n{'-'*23} 55 >> Start EMV Data{'-'*23}")
                         v.__repr__()
                     else:
                         if len(str(k)) == 1:
