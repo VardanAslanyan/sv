@@ -6,15 +6,16 @@ from retry import retry
 
 @retry(exceptions=Exception, tries=5, delay=2, backoff=2, max_delay=10)
 def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, destination=None, destination_port=None):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((host, port))
-    s.listen(10)
-    conn, address = s.accept()
+    listen_data = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    listen_data.bind((host, port))
+    listen_data.listen(10)
+    conn, address = listen_data.accept()
     conn.settimeout(2)
     d = None
     with conn:
         while True:
             data = conn.recv(1024)
+            listen_data.settimeout(5)  # TODO check work correct or not
             if not data:
                 print("Good day my brother!")
                 break
@@ -37,7 +38,7 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
                 conn.sendall(to_client)
                 print("The end!")
     d.close()
-    s.close()
+    listen_data.close()
     print('It is the end!')
 
 
