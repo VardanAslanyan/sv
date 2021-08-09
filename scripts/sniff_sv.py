@@ -35,6 +35,9 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None, des
             except Exception as ex:
                 print(ex)
             finally:
+                # print(to_client)
+                # x = to_client.replace(b'0002101', b'9142101')
+                # conn.sendall(x)
                 conn.sendall(to_client)
                 print("The end!")
     d.close()
