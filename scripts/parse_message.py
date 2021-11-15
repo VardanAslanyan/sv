@@ -135,10 +135,10 @@ class SV:
                         v.__repr__()
                     else:
                         if len(str(k)) == 1:
-                            space = 1
+                            space = " "
                         else:
-                            space = 0
-                        print(f'{i.name}{">"*(40 - len(i.name) + space)}{k}{"-"*8}{v}')
+                            space = ""
+                        print(f'{i.name}{">"*(39 - len(i.name))} {space}{k} {"-"*8} {v}')
 
 
 

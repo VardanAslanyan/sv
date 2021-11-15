@@ -35,6 +35,8 @@ class DE55:
         for k, v in sorted(tlv.items()):
             length = len(k)
             if length == 2:
+                length = 8
+            else:
                 length = 6
             print(DE55.all_emv.get(k), ">"*(38 - len(DE55.all_emv.get(k))), k, "-" * length, v)
         print('================================================================================')
