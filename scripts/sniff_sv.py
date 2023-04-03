@@ -1,7 +1,9 @@
 import socket
 import binascii
-from .parse_message import SV
 from retry import retry
+from datetime import datetime
+
+from .parse_message import SV
 
 
 @retry(exceptions=Exception, tries=5, delay=2, backoff=2, max_delay=10)
@@ -12,15 +14,17 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None,
     listen_data.bind((host, port))
     listen_data.listen(10)
     conn, address = listen_data.accept()
-    conn.settimeout(30)
+    conn.settimeout(32)
     print(conn, address)
     d = None
     with conn:
         while True:
             try:
                 data = conn.recv(1024)
-                listen_data.settimeout(30)  # TODO check work correct or not
+                listen_data.settimeout(32)
                 print("\nRequest>>>", data)
+                print(data.hex())
+                print('Time', datetime.now().time())
             except Exception as error:
                 print(error)
                 break
@@ -51,6 +55,7 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None,
                 break
             try:
                 print("\n\nResponse>>>", to_client)
+                print("Time", datetime.now().time())
                 to_client_hex = binascii.hexlify(to_client)
                 SV(to_client_hex.decode("utf-8")).__repr__()
                 if scenario == 'nothing_pass_to_pos':
@@ -65,6 +70,9 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None,
                         print('\n-----------------Created automatic_reversal pass_reversal_to_pos-------------\n')
                     else:
                         conn.sendall(to_client)
+                elif scenario == 'card_answer_AAC':
+                    conn.sendall(
+                        b'01240210r0\x00\x00\x0e\x80\x82\x00169051345200223731000000000000045800063010502700004922063010502600101893490693490600021010878051\x00\x14\x91\x08\xd4\xa3@\xe0\x00\x80\x00\x00\x8a\x0200')
                 else:
                     conn.sendall(to_client)
             except Exception as ex:
@@ -76,13 +84,3 @@ def sniffer_data(host=socket.gethostbyname(socket.gethostname()), port=None,
     if listen_data:
         listen_data.close()
     print('It is the end!')
-
-
-
-
-
-
-
-
-
-

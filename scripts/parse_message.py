@@ -3,41 +3,40 @@ from .tlv_parser import DE55
 
 
 class SV:
-
     Data = namedtuple("Data", ["field", "length", "name"])
-    mti = Data(0, 4*2, "Message Type ID")
-    field_1 = Data(1, 8*2, "Secondary Bit-Map")
+    mti = Data(0, 4 * 2, "Message Type ID")
+    field_1 = Data(1, 8 * 2, "Secondary Bit-Map")
     field_2 = Data(2, 'len_ascii', "Primary Account Number")
-    field_3 = Data(3, 6*2, "Processing code")
-    field_4 = Data(4, 12*2, "Amount Trx")
-    field_5 = Data(5, 13*2, "Amount, Settlement")
-    field_7 = Data(7, 10*2, "Date and Time")
-    field_11 = Data(11, 6*2, "Systems Trace Audit Number")
-    field_12 = Data(12, 12*2, "Time, Local Transaction")
-    field_14 = Data(14, 6*2, "Date, Expiration")
-    field_15 = Data(15, 6*2, "Date, Settlement")
-    field_22 = Data(22, 3*2, "Point of Service Data Code")
-    field_24 = Data(24, 3*2, "Function Code")
-    field_25 = Data(25, 2*2, "Point of Service Condition Code")
-    field_30 = Data(30, 13*2, "Amount, Original")
+    field_3 = Data(3, 6 * 2, "Processing code")
+    field_4 = Data(4, 12 * 2, "Amount Trx")
+    field_5 = Data(5, 13 * 2, "Amount, Settlement")
+    field_7 = Data(7, 10 * 2, "Date and Time")
+    field_11 = Data(11, 6 * 2, "Systems Trace Audit Number")
+    field_12 = Data(12, 12 * 2, "Time, Local Transaction")
+    field_14 = Data(14, 6 * 2, "Date, Expiration")
+    field_15 = Data(15, 6 * 2, "Date, Settlement")
+    field_22 = Data(22, 3 * 2, "Point of Service Data Code")
+    field_24 = Data(24, 3 * 2, "Function Code")
+    field_25 = Data(25, 2 * 2, "Point of Service Condition Code")
+    field_30 = Data(30, 13 * 2, "Amount, Original")
     field_35 = Data(35, 'len_ascii', "Track 2 Data")
-    field_37 = Data(37, 12*2, "Retrieval Reference Number")
-    field_38 = Data(38, 6*2, "Approval Code")
-    field_39 = Data(39, 3*2, "Response Code")
-    field_41 = Data(41, 8*2, "Card Acceptor Terminal Identification")
-    field_42 = Data(42, 15*2, "Merchant Identification")
+    field_37 = Data(37, 12 * 2, "Retrieval Reference Number")
+    field_38 = Data(38, 6 * 2, "Approval Code")
+    field_39 = Data(39, 3 * 2, "Response Code")
+    field_41 = Data(41, 8 * 2, "Card Acceptor Terminal Identification")
+    field_42 = Data(42, 15 * 2, "Merchant Identification")
     field_44 = Data(44, 'len_ascii', "Additional Response Data")
     field_45 = Data(45, 'len_ascii', "Track 1 Data")
     field_46 = Data(46, 'len_ascii_6', "Amount, fees")
     field_48 = Data(48, None, "Additional Data - Private")
-    field_49 = Data(49, 3*2, "Currency Code, Transaction")
-    field_52 = Data(52, 8*2, "Personal Identification Data")
+    field_49 = Data(49, 3 * 2, "Currency Code, Transaction")
+    field_52 = Data(52, 8 * 2, "Personal Identification Data")
     field_53 = Data(53, 'len_ascii', "COMMUNICATION KEY")
-    field_54 = Data(54, None, "Amounts, Additional") #TODO check this if possible
+    field_54 = Data(54, None, "Amounts, Additional")
     field_55 = Data(55, 'len_int', "EMV Data")
-    field_62 = Data(62, None, "Customer Defined Response") #TODO check this if possible
-    field_63 = Data(63, None, "Client Debts Data") #TODO check this if possible
-    field_64 = Data(64, 8*2, "PRIMARY MAC DATA")
+    field_62 = Data(62, None, "Customer Defined Response")
+    field_63 = Data(63, None, "Client Debts Data")
+    field_64 = Data(64, 8 * 2, "PRIMARY MAC DATA")
     all_fields = (field_2, field_3, field_4, field_5, field_7, field_11, field_12, field_14, field_15, field_22,
                   field_24, field_25, field_30, field_35, field_37, field_38, field_39, field_41, field_42, field_44,
                   field_45, field_46, field_48, field_49, field_52, field_53, field_55, field_64)
@@ -58,7 +57,7 @@ class SV:
     def bitmap_to_bin(self):
         dec = int(self.bitmap(), 16)
         data = str(bin(dec))[2:]
-        return f'{"0"*(64 - len(data))}{data}'
+        return f'{"0" * (64 - len(data))}{data}'
 
     def find_fields(self):
         source = self.bitmap_to_bin()
@@ -72,9 +71,9 @@ class SV:
         for i in source:
             for j in SV.all_fields:
                 if i == j.field:
-                    if i in (2, 35, 44, 45, 46, 53):
+                    if i in (2, 35, 44, 45, 46, 48, 53):
                         length = 4
-                        if i == 46:
+                        if i in (46, 48):
                             length = 6
                         field_length_hex = data[:length]
                         field_length = int(self.hex_ascii(field_length_hex)) * 2
@@ -104,7 +103,7 @@ class SV:
 
     @classmethod
     def print_24(cls, message_name):
-        symbols = '-'*((60 - len(message_name))//2)
+        symbols = '-' * ((60 - len(message_name)) // 2)
         return f"{symbols}{message_name}{symbols}"
 
     @classmethod
@@ -119,7 +118,7 @@ class SV:
         if value in function_code.keys():
             return SV.print_24(function_code.get(value))
         else:
-            return "-"*60
+            return "-" * 60
 
     def __repr__(self):
         print()
@@ -131,14 +130,11 @@ class SV:
             for i in SV.all_fields:
                 if k == i.field:
                     if k == 55:
-                        print(f"\n{'-'*23} 55 >> Start EMV Data{'-'*23}")
+                        print(f"\n{'-' * 23} 55 >> Start EMV Data{'-' * 23}")
                         v.__repr__()
                     else:
                         if len(str(k)) == 1:
                             space = " "
                         else:
                             space = ""
-                        print(f'{i.name}{">"*(39 - len(i.name))} {space}{k} {"-"*8} {v}')
-
-
-
+                        print(f'{i.name}{">" * (39 - len(i.name))} {space}{k} {"-" * 8} {v}')
